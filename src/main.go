@@ -13,18 +13,19 @@ func main() {
 
 	totalThreads := 0
 
-	// Start timer
-	start := time.Now()
+	// Start timer.
+	start := time.Now().
 
-	// Create 100,000 threads and then destroy them
-	for i := 0; i < 10; i++ {
+	// Create 100,000 threads and then destroy them.
+	for i := 1; i <= 100000; i++ {
 		go thread(i)
-		time.Sleep(time.Millisecond * 250) // Delay by a quarter of a second
 		totalThreads++
 	}
 
 	// End timer
-	elapsed := time.Since(start)
+	elapsed := time.Since(start).Milliseconds() // Determine the elapsed time in milliseconds.
+
+	// Print out report on start and elapsed times
 	fmt.Println("Start time: ", start)
 	fmt.Println("Elapsed time: ", elapsed)
 }
