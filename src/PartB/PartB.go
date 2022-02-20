@@ -6,6 +6,19 @@ import (
 	"time"
 )
 
+// Container - Mutex counter for concurrent access
+type Container struct {
+	mu      sync.Mutex
+	counter int
+}
+
+// Lock the container.
+func (c *Container) inc() {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	c.counter++
+}
+
 // Initiate the waitgroup.
 var wg sync.WaitGroup
 
@@ -31,6 +44,8 @@ func childThread(threadName int, childThread int) {
 
 func main() {
 
+	c := Container{counter: 0}
+
 	// Start timer.
 	start := time.Now()
 
@@ -38,7 +53,7 @@ func main() {
 	for i := 1; i <= 100; i++ {
 		wg.Add(1)
 		go thread(i)
-		totalThreads++
+		c.inc()
 	}
 
 	// End timer
@@ -50,5 +65,5 @@ func main() {
 	// Print out report on start and elapsed times.
 	fmt.Println("Start time: ", start)
 	fmt.Println("Elapsed time: ", elapsed)
-	fmt.Println("Total threads: ", totalThreads+totalChildThreads)
+	fmt.Println("Total threads: ", c.counter)
 }
