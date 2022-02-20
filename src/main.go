@@ -14,7 +14,7 @@ func main() {
 	totalThreads := 0
 
 	// Start timer.
-	start := time.Now().
+	start := time.Now()
 
 	// Create 100,000 threads and then destroy them.
 	for i := 1; i <= 100000; i++ {
