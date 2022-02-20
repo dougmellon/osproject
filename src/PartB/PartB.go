@@ -12,6 +12,8 @@ type Container struct {
 	counter int
 }
 
+var c = Container{counter: 0}
+
 // Lock the container.
 func (c *Container) inc() {
 	c.mu.Lock()
@@ -22,17 +24,13 @@ func (c *Container) inc() {
 // Initiate the waitgroup.
 var wg sync.WaitGroup
 
-// Total thread counter.
-var totalThreads = 0
-var totalChildThreads = 0
-
 // thread.
 func thread(threadName int) {
 	defer wg.Done()
 
 	for i := 1; i <= 1000; i++ {
 		go childThread(threadName, i)
-		totalChildThreads++
+		c.inc()
 	}
 
 }
@@ -43,8 +41,6 @@ func childThread(threadName int, childThread int) {
 }
 
 func main() {
-
-	c := Container{counter: 0}
 
 	// Start timer.
 	start := time.Now()
