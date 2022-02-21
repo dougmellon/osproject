@@ -37,6 +37,8 @@ func thread(threadName int) {
 
 // childThread.
 func childThread(threadName int, childThread int) {
+	defer wg.Done()
+	wg.Add(1)
 	fmt.Printf("Creating thread %d - %d \n", threadName, childThread)
 }
 
@@ -51,11 +53,11 @@ func main() {
 		go thread(i)
 	}
 
-	// End timer
-	elapsed := time.Since(start).Milliseconds() // Determine the elapsed time in milliseconds.
-
 	// Wait for the goroutines to finish.
 	wg.Wait()
+
+	// End timer
+	elapsed := time.Since(start).Milliseconds() // Determine the elapsed time in milliseconds.
 
 	// Print out report on start and elapsed times.
 	fmt.Println("Start time: ", start)
