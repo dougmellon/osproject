@@ -49,7 +49,6 @@ func main() {
 	for i := 1; i <= 100; i++ {
 		wg.Add(1)
 		go thread(i)
-		c.inc()
 	}
 
 	// End timer

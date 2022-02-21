@@ -28,16 +28,24 @@ var wg sync.WaitGroup
 func thread(threadName int) {
 	defer wg.Done()
 
-	for i := 1; i <= 1000; i++ {
+	for i := 1; i <= 100; i++ {
 		go childThread(threadName, i)
-		c.inc()
 	}
 
 }
 
 // childThread.
 func childThread(threadName int, childThread int) {
-	fmt.Printf("Creating thread %d - %d \n", threadName, childThread)
+	for i := 1; i <= 100; i++ {
+		go grandChildThread(threadName, childThread, i)
+		c.inc()
+	}
+
+}
+
+// grandChildThread
+func grandChildThread(threadName int, childThread int, grandChildThread int) {
+	fmt.Printf("Creating thread %d - %d - %d \n", threadName, childThread, grandChildThread)
 }
 
 func main() {
@@ -46,10 +54,9 @@ func main() {
 	start := time.Now()
 
 	// Create 100 parent threads.
-	for i := 1; i <= 100; i++ {
+	for i := 1; i <= 10; i++ {
 		wg.Add(1)
 		go thread(i)
-		c.inc()
 	}
 
 	// End timer
